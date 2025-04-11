@@ -1,5 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { UserInterface, UserRole } from "./interface/user.interface";
+import * as bcrypt from "bcrypt";
 
 @Entity({ name: "users" })
 export class User implements UserInterface {
@@ -27,4 +28,8 @@ export class User implements UserInterface {
         onUpdate: "CURRENT_TIMESTAMP",
     })
     updatedAt: Date;
+
+    async validatePassword(password: string): Promise<boolean> {
+        return await bcrypt.compare(password, this.password);
+    }
 }
