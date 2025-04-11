@@ -1,4 +1,8 @@
-import { Injectable } from "@nestjs/common";
+import {
+    BadRequestException,
+    Injectable,
+    InternalServerErrorException,
+} from "@nestjs/common";
 import { registerUserDto } from "./dto/registerUser.dto";
 import * as bcrypt from "bcrypt";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -21,7 +25,7 @@ export class UserService {
             });
 
             if (existingUser) {
-                throw new Error("User already exists");
+                throw new BadRequestException("User already exists");
             }
 
             const hashedPassword = await bcrypt.hash(userData.password, 10);
@@ -32,10 +36,10 @@ export class UserService {
             return await this.userRepository.save(newUser);
         } catch (error) {
             console.error("Error registering user:", error);
-            if (error instanceof Error) {
-                throw new Error(error.message);
+            if (error instanceof BadRequestException) {
+                throw error;
             }
-            throw new Error("Error registering user");
+            throw new InternalServerErrorException("Internal server error");
         }
     }
 }
