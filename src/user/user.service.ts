@@ -42,4 +42,13 @@ export class UserService {
             throw new InternalServerErrorException("Internal server error");
         }
     }
+
+    async getAllUsers(): Promise<User[]> {
+        try {
+            return await this.userRepository.find();
+        } catch (error) {
+            console.error("Error fetching users:", error);
+            throw new InternalServerErrorException("Internal server error");
+        }
+    }
 }
