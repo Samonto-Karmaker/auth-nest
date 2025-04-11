@@ -3,6 +3,9 @@ import { UserService } from "./user.service";
 import { registerUserDto } from "./dto/registerUser.dto";
 import { JwtAuthGuard } from "src/auth/jwt/jwt.guard";
 import { User } from "src/common/decorator/user.decorator";
+import { RoleGuard } from "src/auth/guard/role/role.guard";
+import { Roles } from "src/common/decorator/role.decorator";
+import { UserRole } from "./interface/user.interface";
 
 @Controller("user")
 export class UserController {
@@ -23,5 +26,19 @@ export class UserController {
     @UseGuards(JwtAuthGuard)
     getMe(@User("id") userId: number) {
         return this.userService.getMe(userId);
+    }
+
+    @UseGuards(JwtAuthGuard, RoleGuard)
+    @Roles(UserRole.USER)
+    @Get("/user-page")
+    getUserPage() {
+        return "User page";
+    }
+
+    @UseGuards(JwtAuthGuard, RoleGuard)
+    @Roles(UserRole.ADMIN)
+    @Get("/admin-page")
+    getAdminPage() {
+        return "Admin page";
     }
 }
