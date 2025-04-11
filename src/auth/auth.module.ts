@@ -5,6 +5,7 @@ import { UserModule } from "src/user/user.module";
 import { PassportModule } from "@nestjs/passport";
 import { JwtModule } from "@nestjs/jwt";
 import { config } from "dotenv";
+import { JwtStrategy } from "./jwt/jwt.strategy";
 
 config(); // Load environment variables from .env file
 
@@ -17,7 +18,7 @@ config(); // Load environment variables from .env file
             signOptions: { expiresIn: process.env.JWT_EXPIRES_IN }, // Set JWT expiration time
         }),
     ],
-    providers: [AuthService],
+    providers: [AuthService, JwtStrategy], // Provide AuthService and JwtStrategy
     controllers: [AuthController],
 })
 export class AuthModule {}

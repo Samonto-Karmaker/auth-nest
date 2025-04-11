@@ -53,6 +53,25 @@ export class UserService {
         }
     }
 
+    async getMe(userId: number): Promise<User> {
+        try {
+            const user = await this.userRepository.findOne({
+                where: { id: userId },
+                select: ["id", "email", "username", "role"],
+            });
+            if (!user) {
+                throw new NotFoundException("User not found");
+            }
+            return user;
+        } catch (error) {
+            console.error("Error fetching user:", error);
+            if (error instanceof NotFoundException) {
+                throw error;
+            }
+            throw new InternalServerErrorException("Internal server error");
+        }
+    }
+
     async getUserByEmail(email: string): Promise<User> {
         try {
             const user = await this.userRepository.findOne({
