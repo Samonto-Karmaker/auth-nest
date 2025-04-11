@@ -2,6 +2,7 @@ import {
     BadRequestException,
     Injectable,
     InternalServerErrorException,
+    NotFoundException,
 } from "@nestjs/common";
 import { registerUserDto } from "./dto/registerUser.dto";
 import * as bcrypt from "bcrypt";
@@ -48,6 +49,23 @@ export class UserService {
             return await this.userRepository.find();
         } catch (error) {
             console.error("Error fetching users:", error);
+            throw new InternalServerErrorException("Internal server error");
+        }
+    }
+
+    async getUserByEmail(email: string): Promise<User> {
+        try {
+            const user = await this.userRepository.findOne({
+                where: { email },
+            });
+
+            if (!user) {
+                throw new NotFoundException("User not found");
+            }
+
+            return user;
+        } catch (error) {
+            console.error("Error fetching user by email:", error);
             throw new InternalServerErrorException("Internal server error");
         }
     }
