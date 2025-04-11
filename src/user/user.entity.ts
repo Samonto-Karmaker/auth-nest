@@ -13,7 +13,7 @@ export class User implements UserInterface {
     @Column({ type: "varchar", unique: true })
     email: string;
 
-    @Column({ type: "varchar", select: false })
+    @Column({ type: "varchar" })
     password: string;
 
     @Column({ type: "enum", enum: UserRole, default: UserRole.USER })
