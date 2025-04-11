@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import { UserRole } from "../interfaces/user.interface";
+import { UserRole } from "../interface/user.interface";
 import {
     IsEmail,
     IsEnum,
