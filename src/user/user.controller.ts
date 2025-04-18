@@ -24,7 +24,7 @@ export class UserController {
 
     @Get("/me")
     @UseGuards(JwtAuthGuard)
-    getMe(@User("id") userId: number) {
+    getMe(@User("userId") userId: number) {
         return this.userService.getMe(userId);
     }
 
