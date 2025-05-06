@@ -3,7 +3,7 @@ version: "3.8"
 services:
   # Backend service
   backend:
-    build: .
+    image: samontokarmaker/auth-nest:latest # our backend image from Docker Hub
     ports:
       - "5000:5000"  # Expose backend on port 5000
     depends_on:
