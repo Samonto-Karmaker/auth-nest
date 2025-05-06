@@ -6,11 +6,14 @@ config(); // Load environment variables from .env file
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
     type: "postgres",
-    host: process.env.DB_HOST,
+    host:
+        process.env.NODE_ENV === "development"
+            ? process.env.DB_HOST
+            : process.env.DB_HOST_PROD,
     port: Number(process.env.DB_PORT),
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     entities: [path.resolve(__dirname, "..", "**", "*.entity.{ts,js}")],
-    synchronize: true, // Set to false in production
+    synchronize: process.env.NODE_ENV === "development",
 };
