@@ -9,6 +9,7 @@ import { UserRole } from "./interface/user.interface";
 import {
     ApiBadRequestResponse,
     ApiExtraModels,
+    ApiForbiddenResponse,
     ApiInternalServerErrorResponse,
     ApiNotFoundResponse,
     ApiOperation,
@@ -60,6 +61,9 @@ export class UserController {
             },
         },
     })
+    @ApiUnauthorizedResponse({
+        description: "Unauthorized",
+    })
     @ApiInternalServerErrorResponse({
         description: "Internal server error.",
     })
@@ -83,6 +87,9 @@ export class UserController {
     @ApiNotFoundResponse({
         description: "User not found.",
     })
+    @ApiUnauthorizedResponse({
+        description: "Unauthorized",
+    })
     @ApiInternalServerErrorResponse({
         description: "Internal server error.",
     })
@@ -104,6 +111,9 @@ export class UserController {
     @ApiUnauthorizedResponse({
         description: "Unauthorized",
     })
+    @ApiForbiddenResponse({
+        description: "Forbidden",
+    })
     getUserPage() {
         return "User page";
     }
@@ -121,6 +131,9 @@ export class UserController {
     })
     @ApiUnauthorizedResponse({
         description: "Unauthorized",
+    })
+    @ApiForbiddenResponse({
+        description: "Forbidden",
     })
     getAdminPage() {
         return "Admin page";
