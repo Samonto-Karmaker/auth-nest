@@ -8,6 +8,7 @@ import { Roles } from "src/common/decorator/role.decorator";
 import { UserRole } from "./interface/user.interface";
 import {
     ApiBadRequestResponse,
+    ApiBearerAuth,
     ApiExtraModels,
     ApiForbiddenResponse,
     ApiInternalServerErrorResponse,
@@ -47,6 +48,7 @@ export class UserController {
 
     @Get("/")
     @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth("access-token")
     @ApiOperation({
         summary: "Get all users",
         description: "Endpoint to get all users.",
@@ -73,6 +75,7 @@ export class UserController {
 
     @Get("/me")
     @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth("access-token")
     @ApiOperation({
         summary: "Get current user",
         description: "Endpoint to get the current user.",
@@ -100,6 +103,7 @@ export class UserController {
     @UseGuards(JwtAuthGuard, RoleGuard)
     @Roles(UserRole.USER)
     @Get("/user-page")
+    @ApiBearerAuth("access-token")
     @ApiOperation({
         summary: "Get user page",
         description: "Endpoint to get user page. Only accessible to users.",
@@ -121,6 +125,7 @@ export class UserController {
     @UseGuards(JwtAuthGuard, RoleGuard)
     @Roles(UserRole.ADMIN)
     @Get("/admin-page")
+    @ApiBearerAuth("access-token")
     @ApiOperation({
         summary: "Get admin page",
         description: "Endpoint to get admin page. Only accessible to admins.",

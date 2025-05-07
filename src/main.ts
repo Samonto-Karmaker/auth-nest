@@ -14,7 +14,16 @@ async function bootstrap() {
         .setTitle("AuthNest API")
         .setDescription("API documentation for AuthNest")
         .setVersion("1.0")
-        .addBearerAuth()
+        .addBearerAuth(
+            {
+                type: "http",
+                scheme: "bearer",
+                in: "header",
+                name: "Authorization",
+                bearerFormat: "JWT",
+            },
+            "access-token",
+        )
         .build();
 
     const document = SwaggerModule.createDocument(app, swaggerConfig);
