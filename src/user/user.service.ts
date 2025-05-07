@@ -9,6 +9,7 @@ import * as bcrypt from "bcrypt";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./user.entity";
 import { Repository } from "typeorm";
+import { UserInfoDto } from "./dto/userInfo.dto";
 
 @Injectable()
 export class UserService {
@@ -17,7 +18,7 @@ export class UserService {
         private readonly userRepository: Repository<User>,
     ) {}
 
-    async registerUser(userData: RegisterUserDto): Promise<User> {
+    async registerUser(userData: RegisterUserDto): Promise<UserInfoDto> {
         try {
             // Check if the user already exists
             const existingUser = await this.userRepository.findOne({
@@ -34,7 +35,13 @@ export class UserService {
                 ...userData,
                 password: hashedPassword,
             });
-            return await this.userRepository.save(newUser);
+            await this.userRepository.save(newUser);
+            return {
+                id: newUser.id,
+                email: newUser.email,
+                username: newUser.username,
+                role: newUser.role,
+            } as UserInfoDto;
         } catch (error) {
             console.error("Error registering user:", error);
             if (error instanceof BadRequestException) {
@@ -44,19 +51,19 @@ export class UserService {
         }
     }
 
-    async getAllUsers(): Promise<User[]> {
+    async getAllUsers(): Promise<UserInfoDto[]> {
         try {
-            return await this.userRepository.find({
+            return (await this.userRepository.find({
                 select: ["id", "email", "username", "role"],
                 order: { id: "ASC" },
-            });
+            })) as UserInfoDto[];
         } catch (error) {
             console.error("Error fetching users:", error);
             throw new InternalServerErrorException("Internal server error");
         }
     }
 
-    async getMe(userId: number): Promise<User> {
+    async getMe(userId: number): Promise<UserInfoDto> {
         try {
             const user = await this.userRepository.findOne({
                 where: { id: userId },
@@ -65,7 +72,7 @@ export class UserService {
             if (!user) {
                 throw new NotFoundException("User not found");
             }
-            return user;
+            return user as UserInfoDto;
         } catch (error) {
             console.error("Error fetching user:", error);
             if (error instanceof NotFoundException) {
