@@ -46,7 +46,10 @@ export class UserService {
 
     async getAllUsers(): Promise<User[]> {
         try {
-            return await this.userRepository.find();
+            return await this.userRepository.find({
+                select: ["id", "email", "username", "role"],
+                order: { id: "ASC" },
+            });
         } catch (error) {
             console.error("Error fetching users:", error);
             throw new InternalServerErrorException("Internal server error");
