@@ -8,14 +8,18 @@ import { Roles } from "src/common/decorator/role.decorator";
 import { UserRole } from "./interface/user.interface";
 import {
     ApiBadRequestResponse,
+    ApiExtraModels,
     ApiInternalServerErrorResponse,
     ApiNotFoundResponse,
     ApiOperation,
     ApiResponse,
     ApiTags,
     ApiUnauthorizedResponse,
+    getSchemaPath,
 } from "@nestjs/swagger";
+import { UserInfoDto } from "./dto/userInfo.dto";
 
+@ApiExtraModels(UserInfoDto)
 @ApiTags("User")
 @Controller("user")
 export class UserController {
@@ -49,6 +53,12 @@ export class UserController {
     @ApiResponse({
         status: 200,
         description: "List of users.",
+        schema: {
+            type: "array",
+            items: {
+                $ref: getSchemaPath("UserInfoDto"),
+            },
+        },
     })
     @ApiInternalServerErrorResponse({
         description: "Internal server error.",
@@ -66,6 +76,9 @@ export class UserController {
     @ApiResponse({
         status: 200,
         description: "Current user details.",
+        schema: {
+            $ref: getSchemaPath("UserInfoDto"),
+        },
     })
     @ApiNotFoundResponse({
         description: "User not found.",
