@@ -4,7 +4,7 @@ import {
     InternalServerErrorException,
     NotFoundException,
 } from "@nestjs/common";
-import { registerUserDto } from "./dto/registerUser.dto";
+import { RegisterUserDto } from "./dto/registerUser.dto";
 import * as bcrypt from "bcrypt";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./user.entity";
@@ -17,7 +17,7 @@ export class UserService {
         private readonly userRepository: Repository<User>,
     ) {}
 
-    async registerUser(userData: registerUserDto): Promise<User> {
+    async registerUser(userData: RegisterUserDto): Promise<User> {
         try {
             // Check if the user already exists
             const existingUser = await this.userRepository.findOne({

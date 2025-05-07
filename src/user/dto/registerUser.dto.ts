@@ -8,7 +8,7 @@ import {
     MinLength,
 } from "class-validator";
 
-export class registerUserDto {
+export class RegisterUserDto {
     @ApiProperty({
         description: "Username of the user",
         example: "john_doe",
