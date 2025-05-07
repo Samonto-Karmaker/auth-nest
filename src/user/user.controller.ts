@@ -35,6 +35,9 @@ export class UserController {
     @ApiResponse({
         status: 201,
         description: "User registered successfully.",
+        schema: {
+            $ref: getSchemaPath("UserInfoDto"),
+        },
     })
     @ApiBadRequestResponse({
         description: "User already exists.",
